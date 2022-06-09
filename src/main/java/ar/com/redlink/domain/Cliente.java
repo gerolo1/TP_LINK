@@ -19,15 +19,15 @@ public class Cliente {
 	
 	public void generarOrden(Promocion tipoDePago) {
 		OrdenDeCompra miorden = new OrdenDeCompra(this.carrito, tipoDePago, this.membresia);
-		this.orden = miorden;
+		this.setOrden(miorden);
 	}
 	
 	
-	public Cliente(Usuario u, List<Producto> c, Promocion p) {
+	public Cliente(Usuario u, List<Producto> c, Promocion m) {
 		super();
 		this.usuario = u;
 		this.carrito = c;
-		this.membresia = p;
+		this.membresia = m;
 	}
 	public Usuario getUsuario() {
 		return usuario;

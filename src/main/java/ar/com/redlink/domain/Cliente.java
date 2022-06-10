@@ -2,12 +2,32 @@ package ar.com.redlink.domain;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Entity
 public class Cliente {
 	
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@NotBlank
+	private String nombre;
+	@OneToOne @NotNull
 	private Usuario usuario;
+	@ManyToMany
 	private List<Producto> carrito;
+	@ManyToOne @NotNull
 	private Promocion membresia;
-	private OrdenDeCompra orden;
+	@ManyToOne @NotNull
+	private Promocion metodoDePago;
 	
 	public void agregarAlCarrito(Producto producto) {
 		this.carrito.add(producto);
@@ -17,17 +37,22 @@ public class Cliente {
 		this.carrito.remove(producto);
 	}
 	
-	public void generarOrden(Promocion tipoDePago) {
-		OrdenDeCompra miorden = new OrdenDeCompra(this.carrito, tipoDePago, this.membresia);
-		this.setOrden(miorden);
+	protected Cliente() {
+		super();
 	}
 	
-	
-	public Cliente(Usuario u, List<Producto> c, Promocion m) {
+	public Cliente(String n, Usuario u, List<Producto> c, Promocion m) {
 		super();
+		this.nombre = n;
 		this.usuario = u;
 		this.carrito = c;
 		this.membresia = m;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 	public Usuario getUsuario() {
 		return usuario;
@@ -47,11 +72,14 @@ public class Cliente {
 	public void setCarrito(List<Producto> carrito) {
 		this.carrito = carrito;
 	}
-	public OrdenDeCompra getOrden() {
-		return orden;
+	public Integer getId() {
+		return id;
 	}
-	public void setOrden(OrdenDeCompra orden) {
-		this.orden = orden;
+	public Promocion getMetodoDePago() {
+		return metodoDePago;
+	}
+	public void setMetodoDePago(Promocion metodoDePago) {
+		this.metodoDePago = metodoDePago;
 	}
 	
 }

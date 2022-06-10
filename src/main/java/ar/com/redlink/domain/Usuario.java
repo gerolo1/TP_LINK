@@ -1,8 +1,16 @@
 package ar.com.redlink.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
+@Entity
 public class Usuario {
+	
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
 	
 	@NotBlank
 	private String username;
@@ -11,9 +19,8 @@ public class Usuario {
 	private String mail;
 	
 	
-	public Usuario(String n, String p) {
-		this.username = n;
-		this.password = p;
+	protected Usuario() {
+		super();
 	}
 	public String getUsername() {
 		return username;
@@ -32,6 +39,9 @@ public class Usuario {
 	}
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+	public Integer getId() {
+		return id;
 	}
 	
 	

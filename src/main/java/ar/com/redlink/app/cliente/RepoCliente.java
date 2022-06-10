@@ -1,18 +1,13 @@
 package ar.com.redlink.app.cliente;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import ar.com.redlink.app.RepeticionException;
 import ar.com.redlink.domain.Cliente;
 
-public interface RepoCliente {
+public interface RepoCliente extends PagingAndSortingRepository<Cliente, Integer> {
 	
-	public List<Cliente> all();
-	
-	public Boolean clienteExistente(String nombre);
-	
-	public List<Cliente> findByUser(String nombre);
-	
-	public void agregarCliente(Cliente cliente) throws RepeticionException;
+	Page<Cliente> findByNombre(String mail, Pageable page);
 
 }

@@ -1,17 +1,12 @@
 package ar.com.redlink.app.usuario;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import ar.com.redlink.app.RepeticionException;
 import ar.com.redlink.domain.Usuario;
 
-public interface RepoUsuario {
+public interface RepoUsuario extends PagingAndSortingRepository<Usuario, Integer>  {
 	
-	public List<Usuario> all();
-	
-	public Boolean usuarioExistente(String nombre);
-	
-	public List<Usuario> findByName(String nombre);
-	
-	public void agregarUsuario(Usuario usuario) throws RepeticionException;
+	Page<Usuario> findByUsername(String user, Pageable page);
 }

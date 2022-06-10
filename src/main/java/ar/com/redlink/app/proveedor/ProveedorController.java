@@ -1,4 +1,4 @@
-package ar.com.redlink.app.usuario;
+package ar.com.redlink.app.proveedor;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -19,34 +19,34 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.redlink.app.InexistenciaException;
 import ar.com.redlink.app.RepeticionException;
-import ar.com.redlink.domain.Usuario;
+import ar.com.redlink.domain.Proveedor;
 
 @RestController
-@RequestMapping("/usuarios")
-public class UsuarioController {
+@RequestMapping("/proveedores")
+public class ProveedorController {
 	
 	@Autowired
-	private RepoUsuario repo;
+	private RepoProveedor repo;
 	
 	@Value("${elementos.por.pagina}")
 	private Integer elementosPorPagina;
 	
 	@GetMapping("")
-	public Page<Usuario> get(@RequestParam(value = "nombre", required = false) String nombre, Pageable page){
+	public Page<Proveedor> get(@RequestParam(value = "nombre", required = false) String nombre, Pageable page){
 		
 		if(nombre == null) {
 			return repo.findAll(PageRequest.of(page.getPageNumber(), this.elementosPorPagina));
 		} else {
-			return repo.findByUsername(nombre, PageRequest.of(page.getPageNumber(), this.elementosPorPagina));
+			return repo.findByNombre(nombre, PageRequest.of(page.getPageNumber(), this.elementosPorPagina));
 		}
 	}
 	
 	@Transactional
 	@PostMapping("")
-	public void post(@RequestBody @Valid Usuario usuario, BindingResult bindingResult) throws RepeticionException {
+	public void post(@RequestBody @Valid Proveedor proveedor, BindingResult bindingResult) throws RepeticionException {
 		
 		if(!bindingResult.hasErrors()) {
-			repo.save(usuario);
+			repo.save(proveedor);
 		} else {
 			bindingResult.getFieldError();
 		}
@@ -54,13 +54,12 @@ public class UsuarioController {
 	
 	@Transactional
 	@DeleteMapping("")
-	public void delete(@RequestBody Usuario usuario) throws InexistenciaException {
+	public void delete(@RequestBody Proveedor proveedor) throws InexistenciaException {
 		
-		if(repo.existsById(usuario.getId())) {
-			repo.delete(usuario);
+		if(repo.existsById(proveedor.getId())) {
+			repo.delete(proveedor);
 		} else {
 			throw new InexistenciaException();
 		}
 	}
-	
 }

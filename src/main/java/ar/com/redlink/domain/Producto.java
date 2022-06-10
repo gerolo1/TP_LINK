@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -18,11 +18,11 @@ public class Producto {
 	@NotBlank
 	private String nombre;
 	@Min(0)
-	private Integer precio;
-	@Transient @NotNull 
+	private Integer precio; //en dolares
+	@ManyToOne @NotNull 
 	private Proveedor proveedor;
 	
-	protected Producto() { //PARA QUE FUNCIONE HIBERNATE
+	protected Producto() {
 		super();
 	}
 	
@@ -48,5 +48,8 @@ public class Producto {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public Integer getId() {
+		return id;
 	}
 }

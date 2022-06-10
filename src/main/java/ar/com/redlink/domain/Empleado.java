@@ -4,11 +4,29 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Entity
 public class Empleado {
 	
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@NotBlank
+	private String nombre;
+	@Transient @NotNull
 	private Usuario usuario;
+	@Transient
 	private List<Producto> productos;
-	private Integer limiteDeAviso;
+	@Min(0)
+	private Integer cantidadCritica;
 	
 	public void agregarProducto(Producto producto) {
 		
@@ -20,14 +38,14 @@ public class Empleado {
 		this.productos.remove(producto);
 	}
 	
-	public void validarCompra(Cliente cliente) throws FaltanProductosException {
-		List<Producto> productosCliente = cliente.getOrden().getPedido();
+	public void validarCompra(OrdenDeCompra odc) throws FaltanProductosException {
+		List<Producto> productosCliente = odc.getPedido();
 		if(productosCliente.containsAll(this.productos)) {
 
 			//GENERAR MAIL DE COMPROBANTE
 			
 			this.productos.removeAll(productosCliente);
-			Set<Producto> setProductosCliente = cliente.getOrden().getPedido().stream().collect(Collectors.toSet());
+			Set<Producto> setProductosCliente = odc.getPedido().stream().collect(Collectors.toSet());
 			if(setProductosCliente.stream().allMatch(prod -> this.comprobarStock(prod))) {
 				this.notificarProveedor();
 			}
@@ -39,7 +57,7 @@ public class Empleado {
 	private boolean comprobarStock(Producto producto) {
 		
 		List<Producto> productoUnico = this.productos.stream().filter(prod -> prod == producto).collect(Collectors.toList());
-		return productoUnico.size() > this.limiteDeAviso;
+		return productoUnico.size() > this.cantidadCritica;
 	}
 	
 	public void cambiarProveedor(Producto producto, Proveedor nuevoProveedor) {
@@ -53,10 +71,20 @@ public class Empleado {
 		// GENERAR MAIL AL PROVEEDOR
 	}
 
+	protected Empleado() {
+		super();
+	}
 	
-	public Empleado(Usuario u, List<Producto> p) {
+	public Empleado(String n, Usuario u, List<Producto> p) {
+		this.nombre = n;
 		this.usuario = u;
 		this.productos = p;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 	public Usuario getUsuario() {
 		return usuario;
@@ -71,10 +99,13 @@ public class Empleado {
 		this.productos = productos;
 	}
 	public Integer getLimiteDeAviso() {
-		return limiteDeAviso;
+		return cantidadCritica;
 	}
-	public void setLimiteDeAviso(int limiteDeAviso) {
-		this.limiteDeAviso = limiteDeAviso;
+	public void setLimiteDeAviso(Integer limiteDeAviso) {
+		this.cantidadCritica = limiteDeAviso;
+	}
+	public Integer getId() {
+		return id;
 	}
 	
 }

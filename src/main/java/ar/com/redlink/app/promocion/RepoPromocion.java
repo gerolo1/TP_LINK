@@ -1,18 +1,13 @@
 package ar.com.redlink.app.promocion;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import ar.com.redlink.app.RepeticionException;
 import ar.com.redlink.domain.Promocion;
 
-public interface RepoPromocion {
+public interface RepoPromocion extends PagingAndSortingRepository<Promocion, Integer> {
 
-	public List<Promocion> all();
-	
-	public Boolean promocionExistente(String nombre);
-	
-	public List<Promocion> findByName(String nombre);
-	
-	public void agregarPromocion(Promocion promocion) throws RepeticionException;
+	Page<Promocion> findByNombre(String nombre, Pageable page);
 
 }

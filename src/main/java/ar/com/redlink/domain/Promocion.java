@@ -1,9 +1,12 @@
 package ar.com.redlink.domain;
 
 public class Promocion {
-
+	
+	//@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	//private Integer id;
+	
 	private String nombre;
-	private int descuento;
+	private Integer descuento;
 	
 	
 	public Promocion(String n, int d) {
@@ -15,7 +18,7 @@ public class Promocion {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public int getDescuento() {
+	public Integer getDescuento() {
 		return descuento;
 	}
 	public void setDescuento(int descuento) {

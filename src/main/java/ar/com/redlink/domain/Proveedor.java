@@ -2,6 +2,9 @@ package ar.com.redlink.domain;
 
 public class Proveedor {
 	
+	//@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	//private Integer id;
+	
 	private String nombre;
 	private Promocion cupon;
 	

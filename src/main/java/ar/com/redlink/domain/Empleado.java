@@ -8,7 +8,7 @@ public class Empleado {
 	
 	private Usuario usuario;
 	private List<Producto> productos;
-	private int limiteDeAviso;
+	private Integer limiteDeAviso;
 	
 	public void agregarProducto(Producto producto) {
 		
@@ -70,7 +70,7 @@ public class Empleado {
 	public void setProductos(List<Producto> productos) {
 		this.productos = productos;
 	}
-	public int getLimiteDeAviso() {
+	public Integer getLimiteDeAviso() {
 		return limiteDeAviso;
 	}
 	public void setLimiteDeAviso(int limiteDeAviso) {

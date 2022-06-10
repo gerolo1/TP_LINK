@@ -12,7 +12,7 @@ public interface RepoProducto {
 	
 	public void agregarProducto(Producto producto) throws RepeticionException;
 	
-	public List<Producto> clasificar(List<Producto> lista, Pageable page, int cantidadDePaginas);
+	public List<Producto> clasificar(List<Producto> lista, Pageable page, Integer cantidadDePaginas);
 	
 	public List<Producto> findByName(String nombreProd);
 

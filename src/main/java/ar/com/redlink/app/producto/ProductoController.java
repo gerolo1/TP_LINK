@@ -1,9 +1,12 @@
 package ar.com.redlink.app.producto;
 
 import java.awt.print.Pageable;
+
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,28 +27,30 @@ import ar.com.redlink.domain.Producto;
 public class ProductoController {
 	
 	@Autowired
-	private RepoProducto repoProducto;
+	@Qualifier("dbspring")
+	private RepoProductoSpring repo;
 	
 	@Value("${productos.por.pagina}")
-	private int productosPorPagina;
+	private Integer productosPorPagina;
 	
 	@GetMapping("")
 	public Page<Producto> get(@RequestParam(value = "nombre", required = false) String nombre, Pageable page){
 		
-		if(nombre == "") {
-			return new PageImpl<Producto>(repoProducto.clasificar(repoProducto.all(), page, this.productosPorPagina));
+		if(nombre == null) {
+			return new PageImpl<Producto>(repo.clasificar(repo.findAll(), page, this.productosPorPagina));
 		} else {
-			return new PageImpl<Producto>(repoProducto.clasificar(repoProducto.findByName(nombre), page, this.productosPorPagina));
+			return new PageImpl<Producto>(repo.clasificar(repo.findByNombre(nombre), page, this.productosPorPagina));
 		}
 	}
 	
+	@Transactional
 	@PostMapping("")
 	public void post(@RequestBody @Valid Producto producto, BindingResult bindingResult) throws RepeticionException {
 		
-		if(bindingResult.hasErrors()) {
-			bindingResult.getFieldError();
+		if(!bindingResult.hasErrors()) {
+			repo.save(producto);
 		} else {
-			repoProducto.agregarProducto(producto);
+			bindingResult.getFieldError();
 		}
 	}
 }

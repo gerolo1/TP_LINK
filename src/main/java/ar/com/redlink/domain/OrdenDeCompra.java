@@ -8,7 +8,7 @@ public class OrdenDeCompra {
 	private Promocion metodoDePago;
 	private Promocion membresia;
 	
-	private int montoBruto() {
+	private Integer montoBruto() {
 		int total = 0;
 		for(int i=0; i < this.pedido.size(); i++) {
 			total += this.pedido.get(i).getPrecio();
@@ -16,15 +16,15 @@ public class OrdenDeCompra {
 		return total;
 	}
 	
-	private int descuentoMembresia() {
+	private Integer descuentoMembresia() {
 		return this.montoBruto() * this.membresia.getDescuento();
 	}
 	
-	private int descuentoMetodo() {
+	private Integer descuentoMetodo() {
 		return this.montoBruto() * this.metodoDePago.getDescuento();
 	}
 	
-	private int descuentoCupon() {
+	private Integer descuentoCupon() {
 		int total = 0;
 		for(int i=0; i < this.pedido.size(); i++) {
 			total += this.pedido.get(i).getProveedor().getCupon().getDescuento();
@@ -33,7 +33,7 @@ public class OrdenDeCompra {
 		
 	}
 	
-	public int montoFinal() {
+	public Integer montoFinal() {
 		return this.montoBruto() - this.descuentoMembresia() - this.descuentoMetodo() - this.descuentoCupon();
 	}
 	
